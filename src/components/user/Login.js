@@ -51,14 +51,18 @@ function Login() {
 
   return (
     <div className="login">
-      <span>Select Login Method:</span>
+      <div>Select Login Method:</div>
       <div className="icons">
-        <a onClick={facebookHandler}>
-          <FontAwesomeIcon icon={brands('facebook-f')} />
-        </a>
-        <a onClick={facebookHandler}>
-          <FontAwesomeIcon icon={brands('google')} />
-        </a>
+        <div onClick={facebookHandler}>
+          <a>
+            <FontAwesomeIcon icon={brands('facebook-f')} />
+          </a>
+        </div>
+        <div onClick={facebookHandler}>
+          <a>
+            <FontAwesomeIcon icon={brands('google')} />
+          </a>
+        </div>
       </div>
     </div>
   );
