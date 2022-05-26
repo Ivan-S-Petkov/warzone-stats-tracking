@@ -1,31 +1,22 @@
 import './App.sass';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  solid,
-  regular,
-  brands,
-} from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
-import { Routes, Route, Link } from 'react-router-dom';
+import './utils/firebase';
+import Navigation from './components/main/Navigation';
+import Login from './components/user/Login';
+import { Route, Routes, Switch, NavLink, Link } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
       <header>
         <div>Logo</div>
-        <nav>
-          <Link to="/stats">Stats</Link>
-          <Link to="/matches">Matches</Link>
-          <Link to="/loadouts">Loadouts</Link>
-          <Link to="/profile">Profile</Link>
-          <Link to="/login">
-            <FontAwesomeIcon icon={solid('right-to-bracket')} /> Login
-          </Link>
-          <Link to="/register">
-            <FontAwesomeIcon icon={solid('user-plus')} /> Sign Up
-          </Link>
-        </nav>
+        <Navigation />
       </header>
-      <main></main>
+      <main>
+        <Routes>
+          <Route path="/login" element={<Login />} exact />
+          <Route path="/" element={<></>} exact />
+        </Routes>
+      </main>
       <footer></footer>
     </div>
   );
