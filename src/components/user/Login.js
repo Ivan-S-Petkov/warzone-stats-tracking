@@ -5,6 +5,7 @@ import {
   getAuth,
   signInWithPopup,
   FacebookAuthProvider,
+  GoogleAuthProvider,
   signOut,
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,19 +15,21 @@ import {
   brands,
 } from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
 
-const provider = new FacebookAuthProvider();
+const providerFacebook = new FacebookAuthProvider();
+const providerGoogle = new GoogleAuthProvider();
 const auth = getAuth();
 
 function Login() {
   const navigate = useNavigate();
 
-  function onLoginFormSubmitHandler(e) {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-  }
+  function loginHandler(e) {
+    let provider = providerFacebook;
+    if (e.target.parentElement.outerHTML.includes('facebook')) {
+      provider = providerFacebook;
+    } else {
+      provider = providerGoogle;
+    }
 
-  function facebookHandler(e) {
     signInWithPopup(auth, provider)
       .then((result) => {
         // The signed-in user info.
@@ -53,12 +56,12 @@ function Login() {
     <div className="login">
       <div>Select Login Method:</div>
       <div className="icons">
-        <div onClick={facebookHandler}>
+        <div onClick={loginHandler}>
           <a>
             <FontAwesomeIcon icon={brands('facebook-f')} />
           </a>
         </div>
-        <div onClick={facebookHandler}>
+        <div onClick={loginHandler}>
           <a>
             <FontAwesomeIcon icon={brands('google')} />
           </a>
