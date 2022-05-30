@@ -14,6 +14,7 @@ import {
   regular,
   brands,
 } from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
+import useAPIUser from '../../hooks/useAPIUser';
 
 const providerFacebook = new FacebookAuthProvider();
 const providerGoogle = new GoogleAuthProvider();
@@ -21,6 +22,7 @@ const auth = getAuth();
 
 function Login() {
   const navigate = useNavigate();
+  const { addUser, user, removeUser } = useAPIUser();
 
   function loginHandler(e) {
     let provider = providerFacebook;
@@ -37,7 +39,8 @@ function Login() {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
-        console.log(user);
+        addUser(user.email);
+        localStorage.setItem('user', user.email);
         navigate('/');
       })
       .catch((error) => {
