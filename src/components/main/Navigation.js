@@ -19,7 +19,6 @@ function Navigation() {
     signOut(auth)
       .then(() => {
         removeUser();
-        localStorage.removeItem('user');
         navigate('/');
       })
       .catch((error) => {
@@ -31,40 +30,40 @@ function Navigation() {
     <nav>
       {user && (
         <li>
-          <NavLink to="/stats" exact>
+          <NavLink to="/stats" exact="/stats">
             Stats
           </NavLink>
         </li>
       )}
       {user && (
         <li>
-          <NavLink to="/matches" exact>
+          <NavLink to="/matches" exact="/matches">
             Matches
           </NavLink>
         </li>
       )}
       <li>
-        <NavLink to="/loadouts" exact>
+        <NavLink to="/loadouts" exact="/loadouts">
           Loadouts
         </NavLink>
       </li>
       {user && (
         <li>
-          <NavLink to="/profile" exact>
+          <NavLink to="/profile" exact="/profile">
             Profile
           </NavLink>
         </li>
       )}
       {!user && (
         <li>
-          <NavLink to="/login" exact>
+          <NavLink to="/login" exact="/login">
             <FontAwesomeIcon icon={solid('right-to-bracket')} /> Login
           </NavLink>
         </li>
       )}
       {user && (
         <li onClick={logout}>
-          <NavLink to="/logout" exact>
+          <NavLink to="/logout" exact="/logout">
             <FontAwesomeIcon icon={solid('right-to-bracket')} /> Logout
           </NavLink>
         </li>

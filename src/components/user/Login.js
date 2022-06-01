@@ -6,15 +6,11 @@ import {
   signInWithPopup,
   FacebookAuthProvider,
   GoogleAuthProvider,
-  signOut,
 } from 'firebase/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  solid,
-  regular,
-  brands,
-} from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
+import { brands } from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
 import useAPIUser from '../../hooks/useAPIUser';
+import { findUser, createUser } from '../../services/userFirebase';
 
 const providerFacebook = new FacebookAuthProvider();
 const providerGoogle = new GoogleAuthProvider();
@@ -22,7 +18,7 @@ const auth = getAuth();
 
 function Login() {
   const navigate = useNavigate();
-  const { addUser, user, removeUser } = useAPIUser();
+  const { setNewUser } = useAPIUser();
 
   function loginHandler(e) {
     let provider = providerFacebook;
@@ -36,11 +32,20 @@ function Login() {
       .then((result) => {
         // The signed-in user info.
         const user = result.user;
+        const email = result.user.email;
+        const name = result.user.displayName;
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
-        addUser(user.email);
-        localStorage.setItem('user', user.email);
+
+        findUser(result.user.email).then((result) => {
+          if (result.docs.length === 0) {
+            setNewUser(true);
+            createUser(email, name);
+          } else {
+          }
+        });
+
         navigate('/');
       })
       .catch((error) => {
