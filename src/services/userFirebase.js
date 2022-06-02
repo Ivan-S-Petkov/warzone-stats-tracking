@@ -23,4 +23,6 @@ function createUser(email, name) {
   });
 }
 
-export { findUser, createUser };
+function updateUser(id) {}
+
+export { findUser, createUser, updateUser };
