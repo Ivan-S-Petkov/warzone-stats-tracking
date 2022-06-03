@@ -1,5 +1,5 @@
 @import colours
-@import url('https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;500;600;700&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap')
 
 .App
   text-align: center
@@ -9,21 +9,19 @@
   flex-direction: column
 
 header
-  font-family: 'Akshar', sans-serif
-  height: 80px
-  background-color: $colour-header
+  font-family: 'Roboto', sans-serif
+  font-weight: bold
   color: $colour-menu
   display: flex
+  flex-direction: column
   align-items: stretch
   justify-content: space-between
   text-transform: uppercase
-  -webkit-box-shadow: 0px 3px 11px 2px $colour-menu
-  box-shadow: 0px 3px 11px 2px $colour-menu
+  background-image: url('/background2.png')
+  background-repeat: no-repeat
+  background-size: cover
   div
-    display: flex
-    align-items: center
-    padding: 40px
-
+    min-height: 70px
 main
   font-family: "Open Sans Condensed", Verdana, Arial, Helvetica, sans-serif
   color: $colour-menu-hover

@@ -1,24 +1,44 @@
 @import '../../_colours'
+@import '../../_sizes'
 
 nav
+    border-top: 1px $colour-menu solid
+    border-bottom: 1px $colour-menu solid
+    margin: 5px 0px 3px 0px
     display: flex
     text-decoration: none
     align-items: stretch
-    li
-        list-style: none
+    font-size: $base-font-size * 1.1
+    justify-content: space-around
+    opacity: 0.9
+    ul
         display: flex
-    a
-        color: inherit
-        text-decoration: none
-        padding: 15px
-        display: flex
-        align-items: center
+        max-width: 1400px
+        width: 100%
+        justify-content: space-between
+        margin: 0
+        padding: 0
+        div
+            display: flex
+            li
+                width: 100%
+                list-style: none
+                display: flex
+                margin: 0px 4px
+                align-items: center
+                a
+                    width: 100%
+                    color: inherit
+                    text-decoration: none
+                    padding: 19px
+                    display: flex
+                    justify-content: center
 
-        &:hover
-            color: $colour-menu-hover
-            transition: 0.4s
-        svg
-            padding: 2px 7px
+                    &:hover
+                        color: $colour-menu-hover
+                        transition: 0.4s
+                svg
+                    padding: 2px 7px
     .active
         color: $colour-menu-hover
         background-color: $colour-menu
