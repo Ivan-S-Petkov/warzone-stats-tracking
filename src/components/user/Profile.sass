@@ -10,14 +10,48 @@
             margin: 10px
             width: 100%
             background-color: $colour-box-background
-            border: 1px $colour-box-border solid
+            border-top: 1px $colour-box-border solid
+            border-bottom: 1px $colour-box-border solid
+            border-left: 2px #101010 solid
+            border-right: 2px #101010 solid
             display: flex
             flex-direction: column
             .header
                 height: 30px
                 display: flex
-                justify-content: center
                 align-items: center
+                padding: 0% 3%
+                text-transform: uppercase
+                font-weight: 700
+                justify-content: space-between
+            .border
+                margin: 0% 3%
+                background-image: repeating-linear-gradient(0deg, $colour-box-border, $colour-box-border 13px, transparent 13px, transparent 23px, $colour-box-border 23px), repeating-linear-gradient(90deg, #333333, #333333 13px, transparent 13px, transparent 23px, #333333 23px)
+                background-size: 0px 100%, 100% 1.5px, 2px 100% , 100% 2px
+                background-position: bottom
+                background-repeat: no-repeat
+                height: 1.5px
+            .body
+                .input
+                    padding: 5% 14px
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+
+                .css-input
+                    padding: 5px
+                    font-size: 16px
+                    border-width: 1px
+                    border-color: $colour-box-border
+                    background-color: $colour-box-background
+                    color: $colour-menu
+                    border-style: solid
+                    border-radius: 0px
+                    box-shadow: 0px 0px 5px rgba(66,66,66,.75)
+                    text-shadow: 0px 0px 5px rgba(66,66,66,.75)
+
+.css-input:focus
+    outline: none
 
 .header
 

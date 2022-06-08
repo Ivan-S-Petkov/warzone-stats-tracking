@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { brands } from '@fortawesome/fontawesome-svg-core/import.macro'; // <-- import styles to be used
 import useAPIUser from '../../hooks/useAPIUser';
 import { findUser, createUser } from '../../services/userFirebase';
+import { login, Warzone } from '../../services/codAPI';
 
 const providerFacebook = new FacebookAuthProvider();
 const providerGoogle = new GoogleAuthProvider();
@@ -37,6 +38,12 @@ function Login() {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
+        login(
+          'MTA4Mjc0MjU0Nzg5NDcyNDUwNDg6MTY1NTM4NTE3OTk1NToyN2ZlZTljZWUzMjllNTkxOTAzMTE5MDc5Njk1ZTYzYw'
+        );
+        Warzone.fullData('Italiano#21848', `battle`).then((data) => {
+          console.log(data);
+        });
 
         findUser(result.user.email).then((result) => {
           if (result.docs.length === 0) {
