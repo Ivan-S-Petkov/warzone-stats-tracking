@@ -1,12 +1,13 @@
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import useAPIUser from '../../hooks/useAPIUser';
 import './Profile.sass';
-import Login from '../../services/codAPI';
+import { Warzone } from '../../services/codAPI';
+import { findUser, getUser, updateUser } from '../../services/userFirebase';
 
 function Profile() {
-  const { user } = useAPIUser();
+  const { user, addUser } = useAPIUser();
   const activisionRef = useRef(null);
   const battlenetRef = useRef(null);
   const psnRef = useRef(null);
@@ -15,23 +16,30 @@ function Profile() {
   const xboxRef = useRef(null);
 
   const inputRef = {
-    activision: activisionRef,
-    battlenet: battlenetRef,
+    acti: activisionRef,
+    battle: battlenetRef,
     psn: psnRef,
     steam: steamRef,
     uno: unoRef,
-    xbox: xboxRef,
+    xbl: xboxRef,
   };
 
-  function addUserProfile(profile) {
-    console.log(inputRef[profile].current.value);
-    // login()
-    //   .then((result) => {
-    //     console.log(result);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+  function addUserProfile(platform) {
+    let gametag = inputRef[platform].current.value;
+
+    Warzone.fullData(gametag, platform).then((data) => {
+      if (data.status === 'success') {
+        findUser(user.user.email).then((result) => {
+          let id = result.docs[0].id;
+          updateUser(id, { [platform]: gametag }).then(() => {
+            getUser(id).then((data) => {
+              addUser(data.data());
+              console.log(user);
+            });
+          });
+        });
+      }
+    });
   }
 
   return (
@@ -46,8 +54,8 @@ function Profile() {
             <div className="header">Activision</div>
             <div className="border"></div>
             <div className="body">
-              {user.activision ? (
-                user.activision
+              {user.user.acti ? (
+                user.user.acti
               ) : (
                 <div className="input">
                   <input
@@ -57,7 +65,7 @@ function Profile() {
                   />
                   <FontAwesomeIcon
                     icon={solid('plus')}
-                    onClick={(e) => addUserProfile('activision')}
+                    onClick={(e) => addUserProfile('acti')}
                   />
                 </div>
               )}
@@ -67,14 +75,14 @@ function Profile() {
             <div className="header">Battlenet</div>
             <div className="border"></div>
             <div className="body">
-              {user.battlenet ? (
-                user.battlenet
+              {user.user.battle ? (
+                user.user.battle
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={battlenetRef} />
                   <FontAwesomeIcon
                     icon={solid('plus')}
-                    onClick={(e) => addUserProfile('battlenet')}
+                    onClick={(e) => addUserProfile('battle')}
                   />
                 </div>
               )}
@@ -84,8 +92,8 @@ function Profile() {
             <div className="header">PSN</div>
             <div className="border"></div>
             <div className="body">
-              {user.psn ? (
-                user.psn
+              {user.user.psn ? (
+                user.user.psn
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={psnRef} />
@@ -103,8 +111,8 @@ function Profile() {
             <div className="header">Steam</div>
             <div className="border"></div>
             <div className="body">
-              {user.steam ? (
-                user.steam
+              {user.user.steam ? (
+                user.user.steam
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={steamRef} />
@@ -120,8 +128,8 @@ function Profile() {
             <div className="header">Uno</div>
             <div className="border"></div>
             <div className="body">
-              {user.uno ? (
-                user.uno
+              {user.user.uno ? (
+                user.user.uno
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={unoRef} />
@@ -137,14 +145,14 @@ function Profile() {
             <div className="header">XBOX</div>
             <div className="border"></div>
             <div className="body">
-              {user.xbox ? (
-                user.xbox
+              {user.user.xbl ? (
+                user.user.xbl
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={xboxRef} />
                   <FontAwesomeIcon
                     icon={solid('plus')}
-                    onClick={(e) => addUserProfile('xbox')}
+                    onClick={(e) => addUserProfile('xbl')}
                   />
                 </div>
               )}

@@ -1,11 +1,13 @@
 import {
   doc,
   getDocs,
+  getDoc,
   setDoc,
   addDoc,
   collection,
   query,
   where,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 
@@ -16,6 +18,12 @@ function findUser(email) {
   return getDocs(q);
 }
 
+async function getUser(id) {
+  const docRef = doc(db, 'users', id);
+  const user = await getDoc(docRef);
+  return user;
+}
+
 function createUser(email, name) {
   return addDoc(userRef, {
     email,
@@ -23,6 +31,9 @@ function createUser(email, name) {
   });
 }
 
-function updateUser(id) {}
+function updateUser(id, update) {
+  const userDoc = doc(db, 'users', id);
+  return updateDoc(userDoc, update);
+}
 
-export { findUser, createUser, updateUser };
+export { getUser, findUser, createUser, updateUser };
