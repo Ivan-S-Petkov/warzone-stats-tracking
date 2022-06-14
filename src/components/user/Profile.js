@@ -1,10 +1,15 @@
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useAPIUser from '../../hooks/useAPIUser';
 import './Profile.sass';
 import { Warzone } from '../../services/codAPI';
-import { findUser, getUser, updateUser } from '../../services/userFirebase';
+import {
+  findUser,
+  getUser,
+  updateUser,
+  deleteUserField,
+} from '../../services/userFirebase';
 
 function Profile() {
   const { user, addUser } = useAPIUser();
@@ -24,23 +29,76 @@ function Profile() {
     xbl: xboxRef,
   };
 
-  function addUserProfile(platform) {
-    let gametag = inputRef[platform].current.value;
+  let [error, setError] = useState();
 
-    Warzone.fullData(gametag, platform).then((data) => {
-      if (data.status === 'success') {
-        findUser(user.user.email).then((result) => {
-          let id = result.docs[0].id;
-          updateUser(id, { [platform]: gametag }).then(() => {
+  function addUserProfile(platform) {
+    let gametag = inputRef[platform].current.value.trim();
+    if (gametag) {
+      Warzone.fullData(gametag, platform)
+        .then((data) => {
+          if (data.status === 'success') {
+            findUser(user.user.email).then((result) => {
+              let id = result.docs[0].id;
+              updateUser(id, { [platform]: gametag, default: platform }).then(
+                () => {
+                  getUser(id).then((data) => {
+                    addUser(data.data());
+                  });
+                }
+              );
+            });
+          } else {
+            setError(data.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setError(err);
+        });
+    } else {
+      setError('You must provide platform username');
+    }
+  }
+
+  function removeUserProfile(platform) {
+    let defaultPlatform = { default: false };
+    findUser(user.user.email).then((result) => {
+      let id = result.docs[0].id;
+      deleteUserField(id, platform).then(() => {
+        getUser(id).then((data) => {
+          addUser(data.data());
+          if (data.data().acti) {
+            defaultPlatform = { default: 'acti' };
+          } else if (data.data().battle) {
+            defaultPlatform = { default: 'battle' };
+          } else if (data.data().psn) {
+            defaultPlatform = { default: 'psn' };
+          } else if (data.data().steam) {
+            defaultPlatform = { default: 'steam' };
+          } else if (data.data().uno) {
+            defaultPlatform = { default: 'uno' };
+          } else if (data.data().xbl) {
+            defaultPlatform = { default: 'xbl' };
+          }
+          updateUser(id, defaultPlatform).then(() => {
             getUser(id).then((data) => {
               addUser(data.data());
-              console.log(user);
             });
           });
         });
-      }
+      });
     });
   }
+
+  useEffect(() => {
+    const timeId = setTimeout(() => {
+      setError(false);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeId);
+    };
+  }, [error]);
 
   return (
     <div>
@@ -48,14 +106,28 @@ function Profile() {
         Welcome {user.user.displayName}, In order to obtain your gaming data we
         need at least one of the following accounts. Gaming Platforms -
       </div>
+      {error ? <div className="error">{error}</div> : ''}
       <div className="profiles">
         <div className="line">
           <div className="box">
-            <div className="header">Activision</div>
+            <div className="header">
+              Activision
+              {user.user.default === 'acti' ? (
+                <FontAwesomeIcon icon={solid('ranking-star')} />
+              ) : (
+                ''
+              )}
+            </div>
             <div className="border"></div>
             <div className="body">
               {user.user.acti ? (
-                user.user.acti
+                <div className="profile">
+                  {user.user.acti}
+                  <FontAwesomeIcon
+                    icon={solid('minus')}
+                    onClick={(e) => removeUserProfile('acti')}
+                  />
+                </div>
               ) : (
                 <div className="input">
                   <input
@@ -72,11 +144,24 @@ function Profile() {
             </div>
           </div>
           <div className="box">
-            <div className="header">Battlenet</div>
+            <div className="header">
+              Battlenet
+              {user.user.default === 'battle' ? (
+                <FontAwesomeIcon icon={solid('ranking-star')} />
+              ) : (
+                ''
+              )}
+            </div>
             <div className="border"></div>
             <div className="body">
               {user.user.battle ? (
-                user.user.battle
+                <div className="profile">
+                  {user.user.battle}
+                  <FontAwesomeIcon
+                    icon={solid('minus')}
+                    onClick={(e) => removeUserProfile('battle')}
+                  />
+                </div>
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={battlenetRef} />
@@ -89,11 +174,24 @@ function Profile() {
             </div>
           </div>
           <div className="box">
-            <div className="header">PSN</div>
+            <div className="header">
+              PSN
+              {user.user.default === 'psn' ? (
+                <FontAwesomeIcon icon={solid('ranking-star')} />
+              ) : (
+                ''
+              )}
+            </div>
             <div className="border"></div>
             <div className="body">
               {user.user.psn ? (
-                user.user.psn
+                <div className="profile">
+                  {user.user.psn}
+                  <FontAwesomeIcon
+                    icon={solid('minus')}
+                    onClick={(e) => removeUserProfile('psn')}
+                  />
+                </div>
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={psnRef} />
@@ -108,11 +206,24 @@ function Profile() {
         </div>
         <div className="line">
           <div className="box">
-            <div className="header">Steam</div>
+            <div className="header">
+              Steam
+              {user.user.default === 'steam' ? (
+                <FontAwesomeIcon icon={solid('ranking-star')} />
+              ) : (
+                ''
+              )}
+            </div>
             <div className="border"></div>
             <div className="body">
               {user.user.steam ? (
-                user.user.steam
+                <div className="profile">
+                  {user.user.steam}
+                  <FontAwesomeIcon
+                    icon={solid('minus')}
+                    onClick={(e) => removeUserProfile('steam')}
+                  />
+                </div>
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={steamRef} />
@@ -125,11 +236,24 @@ function Profile() {
             </div>
           </div>
           <div className="box">
-            <div className="header">Uno</div>
+            <div className="header">
+              Uno
+              {user.user.default === 'uno' ? (
+                <FontAwesomeIcon icon={solid('ranking-star')} />
+              ) : (
+                ''
+              )}
+            </div>
             <div className="border"></div>
             <div className="body">
               {user.user.uno ? (
-                user.user.uno
+                <div className="profile">
+                  {user.user.uno}
+                  <FontAwesomeIcon
+                    icon={solid('minus')}
+                    onClick={(e) => removeUserProfile('uno')}
+                  />
+                </div>
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={unoRef} />
@@ -142,11 +266,24 @@ function Profile() {
             </div>
           </div>
           <div className="box">
-            <div className="header">XBOX</div>
+            <div className="header">
+              XBOX
+              {user.user.default === 'xbl' ? (
+                <FontAwesomeIcon icon={solid('ranking-star')} />
+              ) : (
+                ''
+              )}
+            </div>
             <div className="border"></div>
             <div className="body">
               {user.user.xbl ? (
-                user.user.xbl
+                <div className="profile">
+                  {user.user.xbl}
+                  <FontAwesomeIcon
+                    icon={solid('minus')}
+                    onClick={(e) => removeUserProfile('xbl')}
+                  />
+                </div>
               ) : (
                 <div className="input">
                   <input type="text" className="css-input" ref={xboxRef} />

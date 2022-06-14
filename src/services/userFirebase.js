@@ -8,6 +8,7 @@ import {
   query,
   where,
   updateDoc,
+  deleteField,
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 
@@ -36,4 +37,11 @@ function updateUser(id, update) {
   return updateDoc(userDoc, update);
 }
 
-export { getUser, findUser, createUser, updateUser };
+function deleteUserField(id, field) {
+  const docRef = doc(db, 'users', id);
+  return updateDoc(docRef, {
+    [field]: deleteField(),
+  });
+}
+
+export { getUser, findUser, createUser, updateUser, deleteUserField };

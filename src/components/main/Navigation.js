@@ -68,9 +68,9 @@ function Navigation() {
           )}
           {user && (
             <li onClick={logout}>
-              <a href="">
+              <NavLink to="/" exact="/">
                 <FontAwesomeIcon icon={solid('right-to-bracket')} />
-              </a>
+              </NavLink>
             </li>
           )}
         </div>

@@ -32,12 +32,18 @@
                 background-repeat: no-repeat
                 height: 1.5px
             .body
+                margin: auto
+                .profile
+                    display: flex
+                    align-items: center
                 .input
                     padding: 5% 14px
                     display: flex
                     justify-content: space-between
                     align-items: center
-
+                svg
+                    padding: 8px
+                    cursor: pointer
                 .css-input
                     padding: 5px
                     font-size: 16px
@@ -53,6 +59,11 @@
 .css-input:focus
     outline: none
 
-.header
-
-.body
+.error
+    background-color: $colour-box-background
+    border-top: 1px $colour-box-border solid
+    border-bottom: 1px $colour-box-border solid
+    border-left: 2px #814a4a solid
+    border-right: 2px #814a4a solid
+    padding: 7px
+    margin: 4px 10px 0px 10px
