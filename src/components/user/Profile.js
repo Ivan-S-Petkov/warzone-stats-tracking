@@ -90,6 +90,19 @@ function Profile() {
     });
   }
 
+  function setDefault(platform) {
+    if (user.user[platform]) {
+      findUser(user.user.email).then((result) => {
+        let id = result.docs[0].id;
+        updateUser(id, { default: platform }).then(() => {
+          getUser(id).then((data) => {
+            addUser(data.data());
+          });
+        });
+      });
+    }
+  }
+
   useEffect(() => {
     const timeId = setTimeout(() => {
       setError(false);
@@ -101,7 +114,7 @@ function Profile() {
   }, [error]);
 
   return (
-    <div>
+    <div className="profile-container">
       <div className="profile-header">
         Welcome {user.user.displayName}, In order to obtain your gaming data we
         need at least one of the following accounts. Gaming Platforms -
@@ -110,7 +123,7 @@ function Profile() {
       <div className="profiles">
         <div className="line">
           <div className="box">
-            <div className="header">
+            <div className="header" onClick={(e) => setDefault('acti')}>
               Activision
               {user.user.default === 'acti' ? (
                 <FontAwesomeIcon icon={solid('ranking-star')} />
@@ -119,7 +132,7 @@ function Profile() {
               )}
             </div>
             <div className="border"></div>
-            <div className="body">
+            <div className="profiles-body">
               {user.user.acti ? (
                 <div className="profile">
                   {user.user.acti}
@@ -144,7 +157,7 @@ function Profile() {
             </div>
           </div>
           <div className="box">
-            <div className="header">
+            <div className="header" onClick={(e) => setDefault('battle')}>
               Battlenet
               {user.user.default === 'battle' ? (
                 <FontAwesomeIcon icon={solid('ranking-star')} />
@@ -153,7 +166,7 @@ function Profile() {
               )}
             </div>
             <div className="border"></div>
-            <div className="body">
+            <div className="profiles-body">
               {user.user.battle ? (
                 <div className="profile">
                   {user.user.battle}
@@ -174,7 +187,7 @@ function Profile() {
             </div>
           </div>
           <div className="box">
-            <div className="header">
+            <div className="header" onClick={(e) => setDefault('psn')}>
               PSN
               {user.user.default === 'psn' ? (
                 <FontAwesomeIcon icon={solid('ranking-star')} />
@@ -183,7 +196,7 @@ function Profile() {
               )}
             </div>
             <div className="border"></div>
-            <div className="body">
+            <div className="profiles-body">
               {user.user.psn ? (
                 <div className="profile">
                   {user.user.psn}
@@ -206,7 +219,7 @@ function Profile() {
         </div>
         <div className="line">
           <div className="box">
-            <div className="header">
+            <div className="header" onClick={(e) => setDefault('steam')}>
               Steam
               {user.user.default === 'steam' ? (
                 <FontAwesomeIcon icon={solid('ranking-star')} />
@@ -215,7 +228,7 @@ function Profile() {
               )}
             </div>
             <div className="border"></div>
-            <div className="body">
+            <div className="profiles-body">
               {user.user.steam ? (
                 <div className="profile">
                   {user.user.steam}
@@ -236,7 +249,7 @@ function Profile() {
             </div>
           </div>
           <div className="box">
-            <div className="header">
+            <div className="header" onClick={(e) => setDefault('uno')}>
               Uno
               {user.user.default === 'uno' ? (
                 <FontAwesomeIcon icon={solid('ranking-star')} />
@@ -245,7 +258,7 @@ function Profile() {
               )}
             </div>
             <div className="border"></div>
-            <div className="body">
+            <div className="profiles-body">
               {user.user.uno ? (
                 <div className="profile">
                   {user.user.uno}
@@ -266,7 +279,7 @@ function Profile() {
             </div>
           </div>
           <div className="box">
-            <div className="header">
+            <div className="header" onClick={(e) => setDefault('xbl')}>
               XBOX
               {user.user.default === 'xbl' ? (
                 <FontAwesomeIcon icon={solid('ranking-star')} />
@@ -275,7 +288,7 @@ function Profile() {
               )}
             </div>
             <div className="border"></div>
-            <div className="body">
+            <div className="profiles-body">
               {user.user.xbl ? (
                 <div className="profile">
                   {user.user.xbl}

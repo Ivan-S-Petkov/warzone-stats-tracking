@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { findUser, getUser } from '../services/userFirebase';
+import { login } from '../services/codAPI';
 
 export const APIUserContext = React.createContext({
   user: null,
-  newUser: false,
   addUser: () => {},
   removeUser: () => {},
   setNewUser: () => {},
@@ -13,22 +14,26 @@ export default function APIUserProvider({ children }) {
   const [user, setUser] = useState(null);
   const removeUser = () => setUser(null);
   const addUser = (user) => setUser({ user });
-  const [newUser, setNewUser] = useState(false);
-  const setNew = (boolean) => setNewUser({ boolean });
 
   const contextValue = {
     user,
-    newUser,
     addUser: useCallback((user) => addUser(user), []),
     removeUser: useCallback(() => removeUser(), []),
-    setNewUser: useCallback((boolean) => setNew(boolean), []),
   };
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        addUser(user);
+        login(
+          'MTA4Mjc0MjU0Nzg5NDcyNDUwNDg6MTY1NTM4NTE3OTk1NToyN2ZlZTljZWUzMjllNTkxOTAzMTE5MDc5Njk1ZTYzYw'
+        );
+        findUser(user.email).then((result) => {
+          let id = result.docs[0].id;
+          getUser(id).then((data) => {
+            addUser(data.data());
+          });
+        });
       } else {
         removeUser();
       }

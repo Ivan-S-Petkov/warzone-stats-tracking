@@ -1,0 +1,39 @@
+@import '../../_colours'
+
+.body
+    width: 100%
+    background-color: #363B40
+    padding: 15px 25px
+
+    .body-content
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: end
+        .stats
+            margin: 5px
+            .border
+                margin: 0% 3%
+                background-image: repeating-linear-gradient(0deg, $colour-box-border, $colour-box-border 13px, transparent 13px, transparent 23px, $colour-box-border 23px), repeating-linear-gradient(90deg, #333333, #333333 13px, transparent 13px, transparent 23px, #333333 23px)
+                background-size: 0px 100%, 100% 1.5px, 2px 100% , 100% 2px
+                background-position: bottom
+                background-repeat: no-repeat
+                height: 1.5px
+        .profile
+            flex-grow: 2
+            display: flex
+            justify-content: flex-end
+            color: #ffffff
+            font-family: "Roboto", sans-serif
+            font-weight: 450
+            .profile-data
+                padding: 5px 10px
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: baseline
+                .profile-data-level
+                    font-size: 30px
+                    font-weight: 700
+        .stats
+            flex-grow: 1

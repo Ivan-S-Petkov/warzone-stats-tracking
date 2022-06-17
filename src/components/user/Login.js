@@ -38,19 +38,11 @@ function Login() {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
-        login(
-          'MTA4Mjc0MjU0Nzg5NDcyNDUwNDg6MTY1NTM4NTE3OTk1NToyN2ZlZTljZWUzMjllNTkxOTAzMTE5MDc5Njk1ZTYzYw'
-        );
 
         findUser(result.user.email).then((result) => {
           if (result.docs.length === 0) {
             setNewUser(true);
             createUser(email, name);
-          } else {
-            let id = result.docs[0].id;
-            getUser(id).then((data) => {
-              addUser(data.data());
-            });
           }
         });
 

@@ -2,9 +2,8 @@ import { useContext } from 'react';
 import { APIUserContext } from '../provider/APIUserProvider';
 
 function useAPIUser() {
-  const { user, newUser, addUser, removeUser, setNewUser } =
-    useContext(APIUserContext);
-  return { user, newUser, addUser, removeUser, setNewUser };
+  const { user, addUser, removeUser } = useContext(APIUserContext);
+  return { user, addUser, removeUser };
 }
 
 export default useAPIUser;

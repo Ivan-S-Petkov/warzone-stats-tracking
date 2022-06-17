@@ -1,5 +1,6 @@
 @import '../../_colours'
-
+.profile-container
+    width: 100%
 .profiles
     display: flex
     flex-direction: column
@@ -24,6 +25,7 @@
                 text-transform: uppercase
                 font-weight: 700
                 justify-content: space-between
+                cursor: pointer
             .border
                 margin: 0% 3%
                 background-image: repeating-linear-gradient(0deg, $colour-box-border, $colour-box-border 13px, transparent 13px, transparent 23px, $colour-box-border 23px), repeating-linear-gradient(90deg, #333333, #333333 13px, transparent 13px, transparent 23px, #333333 23px)
@@ -31,7 +33,7 @@
                 background-position: bottom
                 background-repeat: no-repeat
                 height: 1.5px
-            .body
+            .profiles-body
                 margin: auto
                 .profile
                     display: flex

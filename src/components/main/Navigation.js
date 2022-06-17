@@ -32,7 +32,7 @@ function Navigation() {
         <div className="left">
           {user && (
             <li>
-              <NavLink to="/stats" exact="/stats">
+              <NavLink to="/" exact="/">
                 Stats
               </NavLink>
             </li>
